@@ -1,12 +1,40 @@
-# React + Vite
+# Assessment from Actify
+This github repository contains users information by collecting the users details via form such as Name, Age, Contact Number, Gmail, Place, Designation and it displays those data in the tabular format.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📦 Technologies
+- `ReactJS`
+- `Tailwind CSS`
+- `Redux Toolkit`
 
-Currently, two official plugins are available:
+## 🚦Running the project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
 
-## Expanding the ESLint configuration
+Before you begin, ensure you have the following installed on your machine:
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- [Node.js](https://nodejs.org/): Make sure to install Node.js, which includes npm (Node Package Manager).
+
+## Steps
+
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/bmukesh23/Actify.git
+    ```
+
+2. **Navigate to the project directory:**
+    ```bash
+    cd Actify
+    ```
+
+3. **Install Dependencies:**
+    ```bash
+    npm install
+    ```
+
+4. **Run the application:**
+    ```bash
+    npm run dev
+    ```
+
+5. **Access the App:**
+- By default, the project will be available at [http://localhost:5173](http://localhost:5173) and open your web browser and go to [http://localhost:5173](http://localhost:5173). 
