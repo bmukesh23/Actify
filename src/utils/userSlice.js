@@ -16,10 +16,16 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       state.users.push(action.payload); // Add the new user to the users array
     },
-    // You can add more actions as needed
+    updateUser: (state, action) => {
+      const updatedUser = action.payload;
+      const index = state.users.findIndex((user) => user.id === updatedUser.id);
+      if (index !== -1) {
+        state.users[index] = updatedUser;
+      }
+    },
   },
 });
 
-export const { setGlobalFilter, addUser } = userSlice.actions;
+export const { setGlobalFilter, addUser, updateUser } = userSlice.actions;
 
 export default userSlice.reducer;

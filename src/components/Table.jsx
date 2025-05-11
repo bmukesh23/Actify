@@ -7,21 +7,44 @@ import {
   getSortedRowModel,
 } from "@tanstack/react-table";
 import { setGlobalFilter } from "../utils/userSlice";
-import { Funnel } from "lucide-react"; // Importing sorting icons
-import * as XLSX from "xlsx"; // Importing SheetJS for Excel export
-import { useNavigate } from "react-router-dom"; // Importing for navigation
+import { Funnel } from "lucide-react";
+import * as XLSX from "xlsx";
+import { useNavigate } from "react-router-dom";
+import { SquarePen } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const Table = React.memo(() => {
   const dispatch = useDispatch();
   const { users, globalFilter } = useSelector((state) => state.user);
-  const navigate = useNavigate(); // Initialize navigate for routing
-  // Define columns for the table
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  // const initialPageIndex = parseInt(queryParams.get("page"), 10) || 0;
+  const initialPageIndex = (parseInt(queryParams.get("page"), 10) || 1) - 1;
+
+
   const columns = React.useMemo(
     () => [
+      {
+        id: "edit", // Edit column
+        header: "Edit",
+        // Move the SquarePen inside the cell function for editing
+        cell: () => null,
+      },
       {
         accessorKey: "name", // Accessor for 'name'
         header: "Name", // Column Header
         enableSorting: true, // Enable sorting
+      },
+      {
+        accessorKey: "date", // Accessor for 'date'
+        header: "Date",
+        enableSorting: true,
+        cell: (info) => {
+          const date = new Date(info.getValue());
+          return date.toLocaleDateString("en-GB"); // Formats to DD/MM/YYYY
+        },
       },
       {
         accessorKey: "age", // Accessor for 'age'
@@ -55,8 +78,11 @@ const Table = React.memo(() => {
   // Apply global filtering
   const filteredData = React.useMemo(() => {
     if (!globalFilter) return users;
+    const lowerCaseFilter = globalFilter.toLowerCase();
     return users.filter((user) =>
-      user.name.toLowerCase().includes(globalFilter.toLowerCase())
+      Object.values(user).some((value) =>
+        String(value).toLowerCase().includes(lowerCaseFilter)
+      )
     );
   }, [globalFilter, users]);
 
@@ -67,6 +93,11 @@ const Table = React.memo(() => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: initialPageIndex, // Set the initial page index
+      },
+    },
   });
 
   // Export functionality
@@ -140,7 +171,16 @@ const Table = React.memo(() => {
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="p-2 text-left border-t">
-                    {cell.getValue()}
+                    {/* Only render the edit icon in the edit column */}
+                    {cell.column.id === "edit" ? (
+                      <SquarePen
+                        size={20}
+                        className="text-blue-500 cursor-pointer hover:scale-110 transition-transform"
+                        onClick={() => navigate(`/form/${row.original.id}?page=${table.getState().pagination.pageIndex + 1}`)}
+                      />
+                    ) : (
+                      cell.getValue()
+                    )}
                   </td>
                 ))}
               </tr>
